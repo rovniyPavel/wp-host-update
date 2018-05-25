@@ -1,7 +1,7 @@
-(function ($) {
+(function (jQuery) {
   "use strict";
   
-  $(document).ready(function(){
+  jQuery(document).ready(function(){
     init_form_tables_switch();
     init_form_findreplace_rows();
     init_form_processing();
@@ -21,12 +21,12 @@
    * show/hide custom tables select
    */
   function init_form_tables_switch() {
-    $('#replace-form input[name=tables]').on('click', function(){
-      var val = $('#replace-form input[name=tables]:checked').val();
+    jQuery('#replace-form input[name=tables]').on('click', function(){
+      var val = jQuery('#replace-form input[name=tables]:checked').val();
       if ( val == 'custom' ) {
-        $('#custom-tables').removeClass('hidden');
+        jQuery('#custom-tables').removeClass('hidden');
       } else {
-        $('#custom-tables').addClass('hidden');
+        jQuery('#custom-tables').addClass('hidden');
       }
     });
   }
@@ -40,41 +40,41 @@
    * @global row_clone;
    */
   function init_form_findreplace_rows() {
-    rowClone = $('#find-replace-rows .row:last').clone();
+    rowClone = jQuery('#find-replace-rows .row:last').clone();
 
     // add row event
-    $('#find-replace-add-row').on('click', function(e){
+    jQuery('#find-replace-add-row').on('click', function(e){
       e.preventDefault();
       
-      $('#find-replace-rows').append( rowClone.clone() );
+      jQuery('#find-replace-rows').append( rowClone.clone() );
     });
     
     // delete row event
-    $(document).on('click', '#find-replace-rows a.text-danger', function(e){
+    jQuery(document).on('click', '#find-replace-rows a.text-danger', function(e){
       e.preventDefault();
       
       // if we have more than one - just remove
-      if ( $('#find-replace-rows .row').size() > 1 ) {
-        $(this).parents('.row').remove();
+      if ( jQuery('#find-replace-rows .row').size() > 1 ) {
+        jQuery(this).parents('.row').remove();
       } else {
         // if only one - just clean input values
-        $('#find-replace-rows .row input:text').val('');
+        jQuery('#find-replace-rows .row input:text').val('');
       }
     });
     
     // init sortable
-    $( "#find-replace-rows" ).sortable({
+    jQuery( "#find-replace-rows" ).sortable({
       handle: ".glyphicon-align-justify"
     });
     
     // init disable of domains check
-    $('#find-multisite-rows a.text-danger').click(function(e){
+    jQuery('#find-multisite-rows a.text-danger').click(function(e){
       e.preventDefault();
       
-      var row = $(this).parents('div.row');
+      var row = jQuery(this).parents('div.row');
       if ( !this.is_disabled ) this.is_disabled = true;
       else this.is_disabled = false;
-      $('input', row).attr('disabled', this.is_disabled);
+      jQuery('input', row).attr('disabled', this.is_disabled);
     });
   }
   
@@ -83,26 +83,26 @@
    * runs validation of the form
    */
   function init_form_processing() {
-    $('#replace-form button.btn-primary').click(function(e){
+    jQuery('#replace-form button.btn-primary').click(function(e){
       e.preventDefault();
       
-      var replace_rows = $('#find-replace-rows .row');
+      var replace_rows = jQuery('#find-replace-rows .row');
       var search_condition_error = false;
       var confirm_required = false;
       for ( var i = 0; i < replace_rows.size(); i++ ) {
         var row = replace_rows[i];
-        $('.form-group', row).removeClass('has-error').addClass('has-success');
+        jQuery('.form-group', row).removeClass('has-error').addClass('has-success');
         
-        var search_empty = ( $.trim($('input:first', row).val()) == '' );
-        var replace_empty = ( $.trim($('input:last', row).val()) == '' );
+        var search_empty = ( jQuery.trim(jQuery('input:first', row).val()) == '' );
+        var replace_empty = ( jQuery.trim(jQuery('input:last', row).val()) == '' );
         
         if ( search_empty && !replace_empty ) {
-          $('.form-group', row).addClass('has-error').removeClass('has-success');
+          jQuery('.form-group', row).addClass('has-error').removeClass('has-success');
           search_condition_error = true;
         }
         
         if ( !search_empty && replace_empty ) {
-          $('.form-group', row).addClass('has-error').removeClass('has-success');
+          jQuery('.form-group', row).addClass('has-error').removeClass('has-success');
           confirm_required = true;
         }
       }
@@ -133,29 +133,29 @@
    */
   function process_findreplace_form_submit() {
     // collect values
-    var replace_rows = $('#find-replace-rows .row');
-    var domain_rows = $('#find-multisite-rows .row');
-    var tables_choice = $('#replace-form input[name=tables]:checked').val();
+    var replace_rows = jQuery('#find-replace-rows .row');
+    var domain_rows = jQuery('#find-multisite-rows .row');
+    var tables_choice = jQuery('#replace-form input[name=tables]:checked').val();
       // autoselect options if "all" selected
       if ( tables_choice == 'all' ) {
-        $('#custom-tables select option').attr('selected', true);
+        jQuery('#custom-tables select option').attr('selected', true);
       }
-    var tables_custom = $('#custom-tables select').val();
-    var replace_method = $('#replace-form input[name=replace_method]:checked').val();
+    var tables_custom = jQuery('#custom-tables select').val();
+    var replace_method = jQuery('#replace-form input[name=replace_method]:checked').val();
 
     var search_replace = [];
     for ( var i=0; i < replace_rows.size(); i++ ) {
       var row = replace_rows[i];
-      var search = $.trim($('input:first', row).val());
-      var replace = $.trim($('input:last', row).val());
+      var search = jQuery.trim(jQuery('input:first', row).val());
+      var replace = jQuery.trim(jQuery('input:last', row).val());
 
       search_replace.push( [search, replace] );
     }
     var domain_replace = [];
     for ( i=0; i < domain_rows.size(); i++ ) {
       row = domain_rows[i];
-      search = $.trim($('input:first', row).val());
-      replace = $.trim($('input:last', row).val());
+      search = jQuery.trim(jQuery('input:first', row).val());
+      replace = jQuery.trim(jQuery('input:last', row).val());
 
       domain_replace.push( [search, replace] );
     }
@@ -183,8 +183,8 @@
           return;
         }
 
-        $('.jumbotron').remove();
-        $('#replace-form').replaceWith( resp.progress_html );
+        jQuery('.jumbotron').remove();
+        jQuery('#replace-form').replaceWith( resp.progress_html );
         progressBar.max = resp.progress_max;
         
         process_tables_one_by_one();
@@ -226,7 +226,7 @@
     if ( step > 0 ) {
       progressBar.spinner.stop();
       
-      log = $('#progress-log .row:last');
+      log = jQuery('#progress-log .row:last');
       wp_table = progressBar.formData.tables_custom[step-1];
       log.find('.text').html('Completed with table <span class="text-warning">' + wp_table + '</span>.');
       log.find('.col-md-1').html('<span class="text-success glyphicon glyphicon-ok"></span>');
@@ -242,13 +242,13 @@
     wp_table = progressBar.formData.tables_custom[step];
     progressBar.spinner = new Spinner(spinnerOpts).spin();
 
-    $('#progress-log').append( '<div class="row"><div class="col-md-1 text-right indicator"></div><div class="col-md-11 text"></div></div>' );
+    jQuery('#progress-log').append( '<div class="row"><div class="col-md-1 text-right indicator"></div><div class="col-md-11 text"></div></div>' );
     
-    log = $('#progress-log .row:last');
+    log = jQuery('#progress-log .row:last');
     log.find('.text').html('Processing table <span class="text-warning">' + wp_table + '</span>...');
     log.find('.col-md-1').append(progressBar.spinner.el);
     progress_scroll += 20;
-    $('#progress-log').animate({scrollTop:progress_scroll}, 'fast');
+    jQuery('#progress-log').animate({scrollTop:progress_scroll}, 'fast');
 
     var data = progressBar.formData;
     data.step = progressBar.currentStep;
@@ -275,13 +275,13 @@
   
   function update_progress_bar() {
     var percents = Math.round( progressBar.value * 100 / progressBar.max );
-    $('.progress-bar').css('width', percents+'%').attr('aria-valuenow', percents);    
+    jQuery('.progress-bar').css('width', percents+'%').attr('aria-valuenow', percents);    
   }
   
   function process_completed_page() {
     ajax_request('page/thanks', {
       success: function(resp) {
-        $('#running').replaceWith(resp);
+        jQuery('#running').replaceWith(resp);
       }
     })
   }
@@ -300,7 +300,7 @@
     
     //pa(params);
     
-    $.ajax(params);
+    jQuery.ajax(params);
   }
   
 }(jQuery));

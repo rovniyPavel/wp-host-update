@@ -10,7 +10,7 @@
 	<!-- spinner -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
 	<!-- custom scripts -->
-	<script src="assets/scripts.js"></script>
+	<script src="http://itcluster.p70.provniy.pers/extensions/wp-host-update/app/assets/scripts.js"></script>
 
 </body>
 </html>

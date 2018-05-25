@@ -12,7 +12,7 @@ class PageController extends BaseController
 		// get tables list
 		$tables = $this->wpdb->get_col("SHOW TABLES LIKE '" . $this->wpdb->prefix . "%'");
 		$tables = array_combine($tables, $tables);
-
+		$this->wpdb->dbname;
 		// get wp options
 		$wp_options = array(
 			'home' => preg_replace('/^(http)s?\:/i', '', get_option('home')),

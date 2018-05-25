@@ -1,0 +1,37 @@
+{
+  "name": "justcoded/wordpress-host-update",
+  "type": "project",
+  "license": "MIT",
+  "description": "Composer scripts for WordPress host update",
+  "authors": [
+    {
+      "name": "Alex Prokopenko",
+      "email": "aprokopenko@justcoded.com",
+      "homepage": "https://github.com/justcoded"
+    }
+  ],
+  "keywords": [
+    "composer scripts",
+    "justcoded",
+    "wordpress",
+    "stack",
+    "composer",
+    "wp"
+  ],
+  "support": {
+    "issues": "https://github.com/justcoded/wp-host-update/issues"
+  },
+  "config": {
+    "preferred-install": "dist"
+  },
+  "require": {
+    "php": ">=7.0",
+    "matthiasmullie/minify": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "JustCoded\\WP\\HostUpdate\\": "app/",
+      "MatthiasMullie\\Minify\\": "src/"
+    }
+  }
+}

@@ -8,7 +8,8 @@ define('APP_PATH', ROOT_DIR . '/app');
 define('BUILD_DIR', ROOT_DIR . '/build');
 define('VIEWS_PATH', APP_PATH . '/views');
 
-include(ROOT_DIR . '/minify/js/ClosureCompiler.php');
+/* use autoload for matthiasmullie */
+require __DIR__ . '/vendor/autoload.php';
 
 // print helper function
 if ( !function_exists('pa') ) :
@@ -33,6 +34,7 @@ function get_content( $file, $content = '', $include_path = null )
 	$style_pattern = '/<link rel="stylesheet" href="[a-zA-Z\.\/\_\'\-]*"(.*?)\/>/';
 
 	$file_content = file_get_contents($file);
+
 	preg_match_all($include_pattern, $file_content, $includes);
 
 	if ( !empty($content) ) {
@@ -51,10 +53,11 @@ function get_content( $file, $content = '', $include_path = null )
 		if ( !empty($scripts[0]) ) {
 			foreach ( $scripts[0] as $script ) {
 				$script_path = str_replace(array( '></script>', '<script src=', '"' ), '', $script);
+				$minifier_scripts = new \MatthiasMullie\Minify\JS( APP_PATH . '/' . trim( $script_path ) );
 				$all_scripts[trim($script_path)] = '<script>';
-				$all_scripts[trim($script_path)] .= Minify_JS_ClosureCompiler::minify(file_get_contents(APP_PATH . '/' . trim($script_path)));
-				//$all_scripts[trim($script_path)] .= file_get_contents(APP_PATH . '/' . trim($script_path));
+				$all_scripts[trim($script_path)] .= $minifier_scripts->minify();
 				$all_scripts[trim($script_path)] .= '</script>';
+
 				$file_content = str_replace($script, '<?php global $wphu_assets; echo stripslashes($wphu_assets["js"]["' . trim($script_path) . '"]); ?>', $file_content);
 			}
 		}
@@ -87,6 +90,7 @@ function get_content( $file, $content = '', $include_path = null )
 	$content = preg_replace('/<!--(.*?)-->/', '', $content);
 	$content = preg_replace('/(\/\/([^\'\"])+?)$/m', '', $content);
 	$content = preg_replace('/(\\s+?)$/m', '', $content);
+
 	return $content;
 }
 

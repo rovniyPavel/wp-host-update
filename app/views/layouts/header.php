@@ -14,7 +14,7 @@
 	<!-- jQuery UI theme -->
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" crossorigin="anonymous">
 	
-	<link rel="stylesheet" href="assets/styles.css" />
+	<link rel="stylesheet" href="http://itcluster.p70.provniy.pers/extensions/wp-host-update/app/assets/styles.css" />
 </head>
 <body>
 
